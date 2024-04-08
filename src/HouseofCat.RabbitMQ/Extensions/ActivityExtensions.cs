@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTelemetry.Trace;
+using System;
 using System.Diagnostics;
 
 namespace HouseofCat.RabbitMQ.Extensions;
@@ -12,9 +13,7 @@ public static class ActivityExtensions
             return;
         }
 
-        _ = activity.AddTag("exception.message", ex.Message);
-        _ = activity.AddTag("exception.stacktrace", ex.ToString());
-        _ = activity.AddTag("exception.type", ex.GetType().FullName);
+        activity.RecordException(ex);
         _ = activity.SetStatus(ActivityStatusCode.Error);
     }
 

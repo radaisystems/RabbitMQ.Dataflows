@@ -569,8 +569,7 @@ public class Publisher : IPublisher, IDisposable
         string activityName = $"{message.Envelope.RoutingKey} publish";
 
 
-        using Activity activity = Activity.Current ??
-            _activitySource.StartActivity(activityName, ActivityKind.Producer, parentContext: message.ActivityContext ?? default);
+        using Activity activity = _activitySource.StartActivity(activityName, ActivityKind.Producer, parentContext: message.ActivityContext ?? default);
 
         try
         {
