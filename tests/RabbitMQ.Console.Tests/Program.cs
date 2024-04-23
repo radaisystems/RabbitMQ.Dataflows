@@ -1,5 +1,5 @@
 ﻿using ConnectivityTests.Tests;
-using HouseofCat.Utilities;
+using RadAI.Utilities;
 using Microsoft.Extensions.Logging;
 
 var loggerFactory = LogHelper.CreateConsoleLoggerFactory(LogLevel.Information);

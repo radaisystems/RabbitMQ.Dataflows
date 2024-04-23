@@ -1,4 +1,4 @@
-using HouseofCat.Hashing;
+using RadAI.Hashing;
 
 namespace Hashing;
 

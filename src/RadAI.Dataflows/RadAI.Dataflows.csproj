@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\common.props" />
+	<ItemGroup>
+		<ProjectReference Include="..\RadAI.Compression\RadAI.Compression.csproj" />
+		<ProjectReference Include="..\RadAI.Encryption\RadAI.Encryption.csproj" />
+		<ProjectReference Include="..\RadAI.Metrics\RadAI.Metrics.csproj" />
+		<ProjectReference Include="..\RadAI.Serialization\RadAI.Serialization.csproj" />
+		<ProjectReference Include="..\RadAI.Utilities\RadAI.Utilities.csproj" />
+	</ItemGroup>
+</Project>

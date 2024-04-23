@@ -2,15 +2,15 @@ $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $outputBasePath = Join-Path $scriptDirectory "../PublishedApp"
 
 $projectPaths = @(
-    "src\HouseofCat.Compression\HouseofCat.Compression.csproj",
-    "src\HouseofCat.Data\HouseofCat.Data.csproj",
-    "src\HouseofCat.Dataflows\HouseofCat.Dataflows.csproj",
-    "src\HouseofCat.Encryption\HouseofCat.Encryption.csproj",
-    "src\HouseofCat.Hashing\HouseofCat.Hashing.csproj",
-    "src\HouseofCat.Metrics\HouseofCat.Metrics.csproj",
-    "src\HouseofCat.RabbitMQ\HouseofCat.RabbitMQ.csproj",
-    "src\HouseofCat.Serialization\HouseofCat.Serialization.csproj",
-    "src\HouseofCat.Utilities\HouseofCat.Utilities.csproj"
+    "src\RadAI.Compression\RadAI.Compression.csproj",
+    "src\RadAI.Data\RadAI.Data.csproj",
+    "src\RadAI.Dataflows\RadAI.Dataflows.csproj",
+    "src\RadAI.Encryption\RadAI.Encryption.csproj",
+    "src\RadAI.Hashing\RadAI.Hashing.csproj",
+    "src\RadAI.Metrics\RadAI.Metrics.csproj",
+    "src\RadAI.RabbitMQ\RadAI.RabbitMQ.csproj",
+    "src\RadAI.Serialization\RadAI.Serialization.csproj",
+    "src\RadAI.Utilities\RadAI.Utilities.csproj"
 )
 
 

@@ -1,5 +1,5 @@
-using HouseofCat.Serialization;
-using HouseofCat.Utilities.Time;
+using RadAI.Serialization;
+using RadAI.Utilities.Time;
 using MessagePack;
 
 namespace Serialization;

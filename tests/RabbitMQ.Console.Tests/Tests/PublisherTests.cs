@@ -1,6 +1,6 @@
-﻿using HouseofCat.RabbitMQ;
-using HouseofCat.RabbitMQ.Pools;
-using HouseofCat.Serialization;
+﻿using RadAI.RabbitMQ;
+using RadAI.RabbitMQ.Pools;
+using RadAI.Serialization;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Threading.Channels;
