@@ -10,17 +10,17 @@
 		<IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
 
 		<!-- NuGet Attributes -->
-		<Authors>HouseofCat.io</Authors>
+		<Authors>RadAI</Authors>
 		<Description>RabbitMQ.Dataflows library helps use RabbitMQ as well as create powerful RabbitMQ powered workflows.</Description>
 		<Copyright>Copyright © 2024</Copyright>
-		<Product>HouseofCat.io - RabbitMQ.Workflows</Product>
-		<PackageIcon>houseofcat.png</PackageIcon>
-		<PackageTags>C# NET8 NetCore RabbitMQ HouseofCat HouseofCat.io TPL Workflows Dataflow Pipelines</PackageTags>
+		<Product>RadAI - RabbitMQ.Workflows</Product>
+		<PackageIcon>RadAI.png</PackageIcon>
+		<PackageTags>C# NET8 NetCore RabbitMQ RadAI RadAI TPL Workflows Dataflow Pipelines</PackageTags>
 		<PackageReleaseNotes>Major overhaul!</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageProjectUrl>https://github.com/houseofcat/RabbitMQ.Dataflows</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/houseofcat/RabbitMQ.Dataflows</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/radaisystems/RabbitMQ.Dataflows</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/radaisystems/RabbitMQ.Dataflows</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 
 		<!-- Sourcelink-->
@@ -55,7 +55,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\..\houseofcat.png">
+		<None Include="..\..\RadAI.png">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>

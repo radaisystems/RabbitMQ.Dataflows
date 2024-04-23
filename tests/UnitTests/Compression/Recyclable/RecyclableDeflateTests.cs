@@ -1,5 +1,5 @@
-using HouseofCat.Compression;
-using HouseofCat.Compression.Recyclable;
+using RadAI.Compression;
+using RadAI.Compression.Recyclable;
 using Xunit.Abstractions;
 
 namespace Compression.Recyclable;

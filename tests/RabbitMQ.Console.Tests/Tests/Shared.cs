@@ -1,11 +1,11 @@
-﻿using HouseofCat.Compression.Recyclable;
-using HouseofCat.Encryption;
-using HouseofCat.Hashing;
-using HouseofCat.RabbitMQ;
-using HouseofCat.RabbitMQ.Pools;
-using HouseofCat.RabbitMQ.Services;
-using HouseofCat.RabbitMQ.Services.Extensions;
-using HouseofCat.Serialization;
+﻿using RadAI.Compression.Recyclable;
+using RadAI.Encryption;
+using RadAI.Hashing;
+using RadAI.RabbitMQ;
+using RadAI.RabbitMQ.Pools;
+using RadAI.RabbitMQ.Services;
+using RadAI.RabbitMQ.Services.Extensions;
+using RadAI.Serialization;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 

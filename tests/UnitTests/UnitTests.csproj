@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HouseofCat.Compression\HouseofCat.Compression.csproj" />
-    <ProjectReference Include="..\..\src\HouseofCat.Data\HouseofCat.Data.csproj" />
-    <ProjectReference Include="..\..\src\HouseofCat.Encryption\HouseofCat.Encryption.csproj" />
-    <ProjectReference Include="..\..\src\HouseofCat.Hashing\HouseofCat.Hashing.csproj" />
-    <ProjectReference Include="..\..\src\HouseofCat.Serialization\HouseofCat.Serialization.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Compression\RadAI.Compression.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Data\RadAI.Data.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Encryption\RadAI.Encryption.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Hashing\RadAI.Hashing.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Serialization\RadAI.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

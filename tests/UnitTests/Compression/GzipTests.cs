@@ -1,4 +1,4 @@
-using HouseofCat.Compression;
+using RadAI.Compression;
 using System.Runtime.CompilerServices;
 using Xunit.Abstractions;
 

@@ -1,5 +1,5 @@
-using HouseofCat.Compression;
-using HouseofCat.Compression.Recyclable;
+using RadAI.Compression;
+using RadAI.Compression.Recyclable;
 
 namespace Compression.Recyclable;
 

@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HouseofCat.Hashing\HouseofCat.Hashing.csproj" />
-    <ProjectReference Include="..\..\src\HouseofCat.RabbitMQ\HouseofCat.RabbitMQ.csproj" />
-    <ProjectReference Include="..\..\src\HouseofCat.Utilities\HouseofCat.Utilities.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Hashing\RadAI.Hashing.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.RabbitMQ\RadAI.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\src\RadAI.Utilities\RadAI.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

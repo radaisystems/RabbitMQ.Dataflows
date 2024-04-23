@@ -1,4 +1,4 @@
-﻿using HouseofCat.RabbitMQ;
+﻿using RadAI.RabbitMQ;
 using Microsoft.Extensions.Logging;
 
 namespace ConnectivityTests.Tests;

@@ -1,5 +1,5 @@
-using HouseofCat.Encryption;
-using HouseofCat.Hashing;
+using RadAI.Encryption;
+using RadAI.Hashing;
 using System.Text;
 using Xunit.Abstractions;
 

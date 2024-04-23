@@ -1,4 +1,4 @@
-using HouseofCat.Compression;
+using RadAI.Compression;
 using Xunit.Abstractions;
 
 namespace Compression.Recyclable;

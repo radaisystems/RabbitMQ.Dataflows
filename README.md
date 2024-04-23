@@ -179,4 +179,4 @@ Also provides Database abstractions, a simple Dapper integration, and SqlKata in
 
 A library that focuses on general purpose utilities and functions that simplify the coding experience.  
 
-# [HouseofCat.io](https://houseofcat.io)
+# [RadAI](https://RadAI)
