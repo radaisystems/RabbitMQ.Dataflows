@@ -584,8 +584,7 @@ public class Publisher : IPublisher, IDisposable
             IBasicProperties basicProperties = message.BuildProperties(channelHost, withOptionalHeaders);
             activity.AddMessagingTags(message);
             // Inject the ActivityContext into the message headers to propagate trace context to the receiving service.
-            Propagator.Inject(new PropagationContext(contextToInject, Baggage.Current), basicProperties, InjectTraceContextIntoBasicProperties);
-
+            Propagator.Inject(new PropagationContext(contextToInject, message.BaggageContext), basicProperties, InjectTraceContextIntoBasicProperties);
 
             channelHost
                 .GetChannel()

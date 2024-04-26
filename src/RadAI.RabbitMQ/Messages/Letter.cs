@@ -4,6 +4,7 @@ using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using OpenTelemetry;
 
 namespace RadAI.RabbitMQ;
 
@@ -13,6 +14,7 @@ public interface IMessage
     Envelope Envelope { get; set; }
     ReadOnlyMemory<byte> Body { get; set; }
     ActivityContext? ActivityContext { get; set; }
+    Baggage BaggageContext { get; set; }
 
     IMetadata GetMetadata();
 
@@ -34,6 +36,7 @@ public class Letter : IMessage
     public Envelope Envelope { get; set; }
     public string MessageId { get; set; }
     public ActivityContext? ActivityContext { get; set; }
+    public Baggage BaggageContext { get; set; }
     public LetterMetadata LetterMetadata { get; set; }
     public ReadOnlyMemory<byte> Body { get; set; }
 
