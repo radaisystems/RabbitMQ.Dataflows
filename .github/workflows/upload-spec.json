@@ -1,0 +1,40 @@
+{
+    "files": [
+        {
+            "pattern": "./src/RadAI.Compression/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Data/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Dataflows/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Encryption/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Hashing/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Metrics/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.RabbitMQ/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Serialization/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        },
+        {
+            "pattern": "./src/RadAI.Utilities/bin/Release/*",
+            "target": "${NUGET_REPO}/rabbitmq/"
+        }
+    ]
+}
