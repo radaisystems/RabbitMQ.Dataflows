@@ -44,6 +44,7 @@ jobs:
       with:
         name: publishedApp
         path: .
+        include-hidden-files: true
 
   deploy:
     name: 'Publish Nuget Scratch'
