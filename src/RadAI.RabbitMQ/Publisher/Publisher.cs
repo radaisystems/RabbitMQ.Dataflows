@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using OpenTelemetry.Context.Propagation;
+using RabbitMQ.Client;
 using RadAI.Compression;
 using RadAI.Encryption;
 using RadAI.RabbitMQ.Extensions;
@@ -6,10 +9,6 @@ using RadAI.Serialization;
 using RadAI.Utilities;
 using RadAI.Utilities.Errors;
 using RadAI.Utilities.Time;
-using Microsoft.Extensions.Logging;
-using OpenTelemetry;
-using OpenTelemetry.Context.Propagation;
-using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -581,9 +580,12 @@ public class Publisher : IPublisher, IDisposable
     /// <param name="withOptionalHeaders"></param>
     public async Task PublishAsync(IMessage message, bool createReceipt, bool withOptionalHeaders = true)
     {
+
         IChannelHost channelHost = await _channelPool
             .GetChannelAsync()
             .ConfigureAwait(false);
+        bool error = false;
+
 
         // Start an activity with a name following the semantic convention of the OpenTelemetry messaging specification.
         // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/messaging/messaging-spans.md#span-name
@@ -593,28 +595,46 @@ public class Publisher : IPublisher, IDisposable
 
         using Activity activity = _activitySource.StartActivity(activityName, ActivityKind.Producer, parentContext: message.ActivityContext ?? default);
 
-
-        ReadOnlyMemory<byte> body = message.GetBodyToPublish(_serializationProvider);
-
-        ActivityContext contextToInject = default;
-        if (activity != null)
+        try
         {
-            contextToInject = activity.Context;
+            ReadOnlyMemory<byte> body = message.GetBodyToPublish(_serializationProvider);
+
+            ActivityContext contextToInject = default;
+            if (activity != null)
+            {
+                contextToInject = activity.Context;
+            }
+
+            IBasicProperties basicProperties = message.BuildProperties(channelHost, withOptionalHeaders);
+            activity.AddMessagingTags(message);
+            // Inject the ActivityContext into the message headers to propagate trace context to the receiving service.
+            Propagator.Inject(new PropagationContext(contextToInject, message.BaggageContext), basicProperties, InjectTraceContextIntoBasicProperties);
+
+            channelHost
+                .GetChannel()
+                .BasicPublish(
+                    message.Envelope.Exchange,
+                    message.Envelope.RoutingKey,
+                    message.Envelope.RoutingOptions?.Mandatory ?? false,
+                    basicProperties,
+                    body);
         }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(
+                 LogMessages.Publishers.PublishMessageFailed,
+                 $"{message.Envelope.Exchange}->{message.Envelope.RoutingKey}",
+                 message.MessageId,
+                 ex.Message);
 
-        IBasicProperties basicProperties = message.BuildProperties(channelHost, withOptionalHeaders);
-        activity.AddMessagingTags(message);
-        // Inject the ActivityContext into the message headers to propagate trace context to the receiving service.
-        Propagator.Inject(new PropagationContext(contextToInject, message.BaggageContext), basicProperties, InjectTraceContextIntoBasicProperties);
-
-        channelHost
-            .GetChannel()
-            .BasicPublish(
-                message.Envelope.Exchange,
-                message.Envelope.RoutingKey,
-                message.Envelope.RoutingOptions?.Mandatory ?? false,
-                basicProperties,
-                body);
+            error = true;
+            throw;
+        }
+        finally
+        {
+            await _channelPool
+              .ReturnChannelAsync(channelHost, error);
+        }
 
     }
 
