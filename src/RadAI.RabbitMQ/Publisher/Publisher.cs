@@ -273,10 +273,33 @@ public class Publisher : IPublisher, IDisposable
         IMetadata metadata = message.GetMetadata();
         _logger.LogDebug(LogMessages.AutoPublishers.MessageQueued, message.MessageId, metadata?.Id);
 
-        await _messageQueue
-          .Writer
-          .WriteAsync(message)
-          .ConfigureAwait(false);
+        if (_compress)
+        {
+            message.Body = await _compressionProvider.CompressAsync(message.Body).ConfigureAwait(false);
+            if (metadata is not null)
+            {
+                metadata.Compressed = _compress;
+                metadata.CustomFields[Constants.HeaderForCompressed] = _compress;
+                metadata.CustomFields[Constants.HeaderForCompression] = _compressionProvider.Type;
+            }
+        }
+
+        if (_encrypt)
+        {
+            message.Body = _encryptionProvider.Encrypt(message.Body).ToArray();
+            if (metadata is not null)
+            {
+                metadata.Encrypted = _encrypt;
+                metadata.CustomFields[Constants.HeaderForEncrypted] = _encrypt;
+                metadata.CustomFields[Constants.HeaderForEncryption] = _encryptionProvider.Type;
+                metadata.CustomFields[Constants.HeaderForEncryptDate] = Time.GetDateTimeNow(Time.Formats.RFC3339Long);
+            }
+        }
+
+        _logger.LogDebug(LogMessages.AutoPublishers.MessagePublished, message.MessageId, metadata?.Id);
+
+        await PublishAsync(message, _createPublishReceipts, _withHeaders)
+            .ConfigureAwait(false);
     }
 
     private async Task ProcessMessagesAsync(ChannelReader<IMessage> channelReader)
