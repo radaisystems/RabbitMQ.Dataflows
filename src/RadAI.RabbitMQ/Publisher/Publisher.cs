@@ -273,10 +273,33 @@ public class Publisher : IPublisher, IDisposable
         IMetadata metadata = message.GetMetadata();
         _logger.LogDebug(LogMessages.AutoPublishers.MessageQueued, message.MessageId, metadata?.Id);
 
-        await _messageQueue
-          .Writer
-          .WriteAsync(message)
-          .ConfigureAwait(false);
+        if (_compress)
+        {
+            message.Body = await _compressionProvider.CompressAsync(message.Body).ConfigureAwait(false);
+            if (metadata is not null)
+            {
+                metadata.Compressed = _compress;
+                metadata.CustomFields[Constants.HeaderForCompressed] = _compress;
+                metadata.CustomFields[Constants.HeaderForCompression] = _compressionProvider.Type;
+            }
+        }
+
+        if (_encrypt)
+        {
+            message.Body = _encryptionProvider.Encrypt(message.Body).ToArray();
+            if (metadata is not null)
+            {
+                metadata.Encrypted = _encrypt;
+                metadata.CustomFields[Constants.HeaderForEncrypted] = _encrypt;
+                metadata.CustomFields[Constants.HeaderForEncryption] = _encryptionProvider.Type;
+                metadata.CustomFields[Constants.HeaderForEncryptDate] = Time.GetDateTimeNow(Time.Formats.RFC3339Long);
+            }
+        }
+
+        _logger.LogDebug(LogMessages.AutoPublishers.MessagePublished, message.MessageId, metadata?.Id);
+
+        await PublishAsync(message, _createPublishReceipts, _withHeaders)
+            .ConfigureAwait(false);
     }
 
     private async Task ProcessMessagesAsync(ChannelReader<IMessage> channelReader)
@@ -558,7 +581,6 @@ public class Publisher : IPublisher, IDisposable
     /// <param name="withOptionalHeaders"></param>
     public async Task PublishAsync(IMessage message, bool createReceipt, bool withOptionalHeaders = true)
     {
-        bool error = false;
         IChannelHost channelHost = await _channelPool
             .GetChannelAsync()
             .ConfigureAwait(false);
@@ -571,51 +593,29 @@ public class Publisher : IPublisher, IDisposable
 
         using Activity activity = _activitySource.StartActivity(activityName, ActivityKind.Producer, parentContext: message.ActivityContext ?? default);
 
-        try
+
+        ReadOnlyMemory<byte> body = message.GetBodyToPublish(_serializationProvider);
+
+        ActivityContext contextToInject = default;
+        if (activity != null)
         {
-            ReadOnlyMemory<byte> body = message.GetBodyToPublish(_serializationProvider);
-
-            ActivityContext contextToInject = default;
-            if (activity != null)
-            {
-                contextToInject = activity.Context;
-            }
-
-            IBasicProperties basicProperties = message.BuildProperties(channelHost, withOptionalHeaders);
-            activity.AddMessagingTags(message);
-            // Inject the ActivityContext into the message headers to propagate trace context to the receiving service.
-            Propagator.Inject(new PropagationContext(contextToInject, message.BaggageContext), basicProperties, InjectTraceContextIntoBasicProperties);
-
-            channelHost
-                .GetChannel()
-                .BasicPublish(
-                    message.Envelope.Exchange,
-                    message.Envelope.RoutingKey,
-                    message.Envelope.RoutingOptions?.Mandatory ?? false,
-                    basicProperties,
-                    body);
+            contextToInject = activity.Context;
         }
-        catch (Exception ex)
-        {
-            _logger.LogDebug(
-                LogMessages.Publishers.PublishMessageFailed,
-                $"{message.Envelope.Exchange}->{message.Envelope.RoutingKey}",
-                message.MessageId,
-                ex.Message);
 
-            error = true;
-        }
-        finally
-        {
-            if (createReceipt)
-            {
-                await CreateReceiptAsync(message, error)
-                    .ConfigureAwait(false);
-            }
+        IBasicProperties basicProperties = message.BuildProperties(channelHost, withOptionalHeaders);
+        activity.AddMessagingTags(message);
+        // Inject the ActivityContext into the message headers to propagate trace context to the receiving service.
+        Propagator.Inject(new PropagationContext(contextToInject, message.BaggageContext), basicProperties, InjectTraceContextIntoBasicProperties);
 
-            await _channelPool
-                .ReturnChannelAsync(channelHost, error);
-        }
+        channelHost
+            .GetChannel()
+            .BasicPublish(
+                message.Envelope.Exchange,
+                message.Envelope.RoutingKey,
+                message.Envelope.RoutingOptions?.Mandatory ?? false,
+                basicProperties,
+                body);
+
     }
 
     /// <summary>
