@@ -618,10 +618,13 @@ public class Publisher : IPublisher, IDisposable
                     message.Envelope.RoutingOptions?.Mandatory ?? false,
                     basicProperties,
                     body);
+
+            channelHost
+               .GetChannel().WaitForConfirmsOrDie(_waitForConfirmation);
         }
         catch (Exception ex)
         {
-            _logger.LogDebug(
+            _logger.LogError(
                  LogMessages.Publishers.PublishMessageFailed,
                  $"{message.Envelope.Exchange}->{message.Envelope.RoutingKey}",
                  message.MessageId,
