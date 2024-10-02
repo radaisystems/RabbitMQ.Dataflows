@@ -582,7 +582,7 @@ public class Publisher : IPublisher, IDisposable
     {
 
         IChannelHost channelHost = await _channelPool
-            .GetChannelAsync()
+            .GetAckChannelAsync()
             .ConfigureAwait(false);
         bool error = false;
 
