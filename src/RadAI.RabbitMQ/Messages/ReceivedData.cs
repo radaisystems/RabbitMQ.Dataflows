@@ -55,6 +55,7 @@ public class ReceivedData : IReceivedData, IDisposable
     public DateTime EncryptedDateTime { get; private set; }
     public bool Compressed { get; private set; }
     public string CompressionType { get; private set; }
+    public int DeliveryCount { get; private set; }
 
     private readonly TaskCompletionSource<bool> _completionSource = new TaskCompletionSource<bool>();
     public Task<bool> Completion => _completionSource.Task;
@@ -92,6 +93,11 @@ public class ReceivedData : IReceivedData, IDisposable
 
     private void ReadHeaders()
     {
+        if (Properties?.Headers != null && Properties.Headers.TryGetValue(Constants.HeaderForDeliveryCount, out var countObj))
+        {
+            DeliveryCount = Convert.ToInt32(countObj);
+        }
+
         if (Properties?.Headers != null && Properties.Headers.TryGetValue(Constants.HeaderForObjectType, out object objectType))
         {
             ContentType = Encoding.UTF8.GetString((byte[])objectType);

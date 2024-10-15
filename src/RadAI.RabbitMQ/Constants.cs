@@ -18,7 +18,7 @@ public static class Constants
     public static string HeaderForEncryptDate { get; set; } = "X-RD-ENCRYPTDATE";
     public static string HeaderForCompressed { get; set; } = "X-RD-COMPRESSED";
     public static string HeaderForCompression { get; set; } = "X-RD-COMPRESSION";
-
+    public static string HeaderForDeliveryCount { get; set; } = "x-delivery-count";
     public const string RangeErrorMessage = "Value for {0} must be between {1} and {2}.";
 
     // Pipeline
