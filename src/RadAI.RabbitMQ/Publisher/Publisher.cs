@@ -631,7 +631,6 @@ public class Publisher : IPublisher, IDisposable
                  ex.Message);
 
             error = true;
-            throw;
         }
         finally
         {
